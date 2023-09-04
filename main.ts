@@ -5,7 +5,7 @@ import * as path from 'https://deno.land/std@0.201.0/path/mod.ts'
 import { router } from 'https://deno.land/x/rutt@0.2.0/mod.ts'
 import { createQuoteImage } from './image.ts'
 
-const webDir = Deno.args.includes('prod') ? 'dist' : 'web'
+const webDir = Deno.args.includes('dev') ? 'web' : 'dist'
 console.log(`Web Directory: ${webDir}`)
 
 const indexPage = await Deno.readFile(path.join(webDir, 'index.html'))

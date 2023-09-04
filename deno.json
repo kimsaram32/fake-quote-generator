@@ -2,7 +2,7 @@
   "tasks": {
     "start": "deno run -A --watch=./web main.ts dev",
     "build": "deno run -A build.ts && minify -r -o dist/ dist/",
-    "preview": "deno run -A main.ts prod"
+    "preview": "deno run -A main.ts"
   },
   "fmt": {
     "singleQuote": true,
