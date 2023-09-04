@@ -1,7 +1,11 @@
+// todo static path replacing
+
 import { copy, ensureFile } from 'https://deno.land/std@0.201.0/fs/mod.ts'
 import * as path from 'https://deno.land/std@0.201.0/path/mod.ts'
 import postCSS from 'https://deno.land/x/postcss@8.4.16/mod.js'
 import postcssPresetEnv from 'npm:postcss-preset-env@9.1.3'
+
+const buildHash = crypto.randomUUID().split('-')[1]
 
 const dir = 'web'
 const outDir = 'dist'
@@ -9,12 +13,20 @@ const outDir = 'dist'
 // @ts-expect-error idk...
 const postCSSInstance = postCSS([postcssPresetEnv({ preserve: true })])
 
-const html = await Deno.readTextFile(path.join(dir, 'index.html'))
+let html = await Deno.readTextFile(path.join(dir, 'index.html'))
 
-const allAssetPaths = html.matchAll(/"[\/.]*assets\/(.+)"/g)
+const allAssetMatches = html.matchAll(/"[\/.]*assets\/(.+)"/g)
 
-const transpileAssets = () => {
-  return [...allAssetPaths].map(async ([, assetPath]) => {
+const getHashedOutPath = (outPath: string) => {
+  return path.format({
+    dir: path.dirname(outPath),
+    name: path.parse(outPath).name,
+    ext: `.${buildHash}${path.extname(outPath)}`,
+  })
+}
+
+const transpileAssets = () =>
+  [...allAssetMatches].map(async ([match, assetPath]) => {
     const fullAssetPath = path.join(dir, 'assets', assetPath)
     const ext = path.extname(fullAssetPath)
 
@@ -29,23 +41,30 @@ const transpileAssets = () => {
       code = new TextEncoder().encode(result.css)
     }
 
-    const outPath = path.join(outDir, 'assets', assetPath)
+    const outPath = getHashedOutPath(
+      path.join(outDir, 'assets', assetPath),
+    )
+
     await ensureFile(outPath)
     await Deno.writeFile(outPath, code)
 
     console.log(`Transpiled asset ${assetPath}`)
+
+    const matchWithHash = match.replace(
+      assetPath,
+      path.relative('dist/assets', outPath),
+    )
+
+    html = html.replaceAll(match, matchWithHash)
   })
-}
 
-const copyStatic = async () => {
-  await Promise.all(
-    ['index.html', 'static'].map((input) =>
-      copy(path.join(dir, input), path.join(outDir, input), {
-        overwrite: true,
-      })
-    ),
-  )
-  console.log('Copied static files')
-}
+await Promise.all([
+  ...transpileAssets(),
+  copy(path.join(dir, 'static'), path.join(outDir, 'static'), {
+    overwrite: true,
+  }),
+])
 
-await Promise.all([...transpileAssets(), copyStatic()])
+const outPath = path.join(outDir, 'index.html')
+await ensureFile(outPath)
+await Deno.writeTextFile(outPath, html)

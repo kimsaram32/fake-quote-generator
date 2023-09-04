@@ -63,7 +63,10 @@ const handler = router({
       const content = await Deno.readFile(assetPath)
 
       return new Response(content, {
-        headers: { 'content-type': contentType(path.extname(assetPath))! },
+        headers: {
+          'content-type': contentType(path.extname(assetPath))!,
+          'cache-control': 'public, max-age=2592000',
+        },
       })
     } catch (error) {
       if (error instanceof Deno.errors.NotFound) {
