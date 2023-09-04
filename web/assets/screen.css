@@ -1,0 +1,194 @@
+@layer reset {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  input,
+  button,
+  textarea {
+    font: inherit;
+    color: inherit;
+  }
+
+  img {
+    max-inline-size: 100%;
+  }
+}
+
+@layer theme {
+  :root {
+    --color-bg: hsl(0 0% 98%);
+    --color-text: hsl(0 0% 2%);
+    --color-input-bg: hsl(0 0% 92%);
+    --color-cta-bg: hsl(0 0% 45%);
+    --color-cta-text: hsl(0 0% 98%);
+
+    --em: #000;
+    --dem: #fff;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-bg: hsl(0 0% 8%);
+      --color-text: hsl(0 0% 95%);
+      --color-input-bg: hsl(0 0% 15%);
+      --color-cta-bg: hsl(0 0% 25%);
+
+      --em: #fff;
+      --dem: #000;
+    }
+  }
+}
+
+@layer global {
+  @font-face {
+    font-family: 'Noto Serif KR';
+    src: url('/static/noto-serif-kr-400.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Noto Serif KR';
+    src: url('/static/noto-serif-kr-700.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  html {
+    color-scheme: light dark;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    font-family: 'Noto Serif KR', ui-serif, serif;
+  }
+}
+
+main {
+  padding-block: 3.2rem;
+  margin-inline: auto;
+  inline-size: min(96vw, 80rem);
+}
+
+/* ~ effect */
+
+h1,
+h2 {
+  inline-size: fit-content;
+  margin-inline: auto;
+}
+
+h1,
+h2,
+label span {
+  display: flex;
+  gap: 0.4em;
+}
+
+:is(h1, h2, label span)::before,
+:is(h1, h2, label span)::after {
+  content: '~';
+  color: color-mix(in oklab, var(--color-text), var(--dem) 49%);
+}
+
+/* create form */
+
+form {
+  margin-block-start: 3.2rem;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  max-inline-size: 24rem;
+}
+
+form label {
+  display: grid;
+  gap: 0.4rem;
+}
+
+form :is(input, textarea, button) {
+  border: none;
+}
+
+form :is(input, textarea) {
+  padding-inline: 0.8em;
+  padding-block: 0.6em;
+  background-color: var(--color-input-bg);
+}
+
+form :is(input, textarea):focus {
+  background-color: color-mix(in oklab, var(--color-input-bg), var(--dem) 5%);
+}
+
+form textarea {
+  resize: vertical;
+}
+
+form > div {
+  display: flex;
+  gap: 1rem;
+}
+
+form > div input {
+  inline-size: 100%;
+}
+
+form footer {
+  margin-block-start: 2rem;
+}
+
+form button {
+  padding-block: 0.8rem;
+  inline-size: 100%;
+  cursor: pointer;
+  background-color: var(--color-cta-bg);
+  color: var(--color-cta-text);
+}
+
+form button:hover {
+  background-color: color-mix(in oklab, var(--color-cta-bg), var(--em) 5%);
+}
+
+form button:active {
+  background-color: color-mix(in oklab, var(--color-cta-bg), var(--em) 10%);
+}
+
+form button:disabled {
+  cursor: not-allowed;
+  color: color-mix(in oklab, var(--color-cta-text), var(--dem) 30%);
+  background-color: color-mix(in oklab, var(--color-cta-bg), var(--dem) 30%);
+}
+
+form p {
+  margin-block-start: 0.8rem;
+  font-size: 0.875rem;
+  text-align: center;
+  color: color-mix(in oklab, var(--color-text), var(--dem) 20%);
+  line-height: 1.5;
+}
+
+/* result */
+
+.result {
+  display: grid;
+  justify-content: center;
+  margin-block-start: 4rem;
+}
+
+.result img {
+  margin-block-start: 2rem;
+  border: 0.16rem solid color-mix(in oklab, var(--color-text), var(--dem) 50%);
+}
+
+.result a {
+  margin-block-start: 1rem;
+  font-size: 1.2em;
+  text-align: center;
+  text-underline-offset: 0.1em;
+}

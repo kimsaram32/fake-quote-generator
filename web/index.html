@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>명언제조기</title>
+
+  <link rel="stylesheet" media="screen" href="/assets/screen.css">
+
+  <link rel="preload" href="/static/noto-serif-kr-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/static/noto-serif-kr-700.woff2" as="font" type="font/woff2" crossorigin>
+
+  <script defer src="/assets/index.js"></script>
+
+  <meta name="description" content="이쁜 명언 만들기">
+</head>
+<body>
+  <main>
+    <h1>명언제조기</h1>
+
+    <form method="post" enctype="multipart/form-data" action="/image">
+      <label>
+        <span>명언</span>
+        <textarea name="quote" placeholder="인터넷에 써 있다면 그건 전부 진짜다" required></textarea>
+      </label>
+      <label>
+        <span>인물</span>
+        <input type="text" name="author" placeholder="알버트 아인슈타인" required>
+      </label>
+      <label>
+        <span>인물 이미지</span>
+        <input type="file" name="image" accept="image/*" required>
+      </label>
+      <div>
+        <label>
+          <span>출생년도</span>
+          <input type="text" name="year-of-birth" placeholder="1809" inputmode="numeric">
+        </label>
+        <label>
+          <span>사망년도</span>
+          <input type="text" name="year-of-death" placeholder="1865" inputmode="numeric">
+        </label>
+      </div>
+      <footer>
+        <button type="submit">명언 생성!</button>
+        <p>
+          특수문자 넣으면 이상하게 나올 수 있는데 알아서하세용
+          <br />
+          이미지 제작을 위해 정보가 서버에 전송됩니다 (저장 x)
+        </p>
+      </footer>
+    </form>
+  </main>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "tasks": {
+    "start": "deno run -A --watch=./web main.ts dev",
+    "build": "deno run -A build.ts && minify -r -o dist/ dist/",
+    "preview": "deno run -A main.ts prod"
+  },
+  "fmt": {
+    "singleQuote": true,
+    "semiColons": false,
+    "exclude": ["/dist"]
+  },
+  "lint": {
+    "rules": {
+      "exclude": ["no-explicit-any"]
+    },
+    "exclude": ["/dist"]
+  }
+}
