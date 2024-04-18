@@ -31,6 +31,7 @@ form.addEventListener('submit', async (event) => {
   }
 
   main.append(resultSection)
+  resultSection.scrollIntoView({ behavior: 'smooth' })
 
   event.submitter.textContent = '명언 생성!'
   event.submitter.disabled = false
